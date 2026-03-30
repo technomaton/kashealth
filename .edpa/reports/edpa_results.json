@@ -1,0 +1,402 @@
+{
+  "iteration": "PI-2026-1.1",
+  "mode": "simple",
+  "computed_at": "2026-03-30T18:38:15.468410+00:00",
+  "methodology": "EDPA 1.0.0-beta",
+  "planning_factor": 0.8,
+  "people": [
+    {
+      "id": "urbanek",
+      "name": "J. Urbanek",
+      "role": "Arch",
+      "capacity": 40,
+      "total_derived": 40.0,
+      "items": [
+        {
+          "id": "S-200",
+          "level": "Story",
+          "js": 3,
+          "cw": 1.0,
+          "rs": 1.0,
+          "score": 3.0,
+          "evidence": [
+            "assignee",
+            "contribute_command"
+          ],
+          "ratio": 0.2,
+          "hours": 8.0
+        },
+        {
+          "id": "S-201",
+          "level": "Story",
+          "js": 3,
+          "cw": 1.0,
+          "rs": 1.0,
+          "score": 3.0,
+          "evidence": [
+            "assignee",
+            "contribute_command"
+          ],
+          "ratio": 0.2,
+          "hours": 8.0
+        },
+        {
+          "id": "S-202",
+          "level": "Story",
+          "js": 3,
+          "cw": 1.0,
+          "rs": 1.0,
+          "score": 3.0,
+          "evidence": [
+            "assignee",
+            "contribute_command"
+          ],
+          "ratio": 0.2,
+          "hours": 8.0
+        },
+        {
+          "id": "S-203",
+          "level": "Story",
+          "js": 3,
+          "cw": 1.0,
+          "rs": 1.0,
+          "score": 3.0,
+          "evidence": [
+            "assignee",
+            "contribute_command"
+          ],
+          "ratio": 0.2,
+          "hours": 8.0
+        },
+        {
+          "id": "S-204",
+          "level": "Story",
+          "js": 3,
+          "cw": 1.0,
+          "rs": 1.0,
+          "score": 3.0,
+          "evidence": [
+            "assignee",
+            "contribute_command"
+          ],
+          "ratio": 0.2,
+          "hours": 8.0
+        }
+      ],
+      "invariant_ok": true
+    },
+    {
+      "id": "tuma",
+      "name": "O. Tuma",
+      "role": "DevSecOps",
+      "capacity": 80,
+      "total_derived": 79.98,
+      "items": [
+        {
+          "id": "S-200",
+          "level": "Story",
+          "js": 3,
+          "cw": 0.3,
+          "rs": 1.0,
+          "score": 0.9,
+          "evidence": [
+            "contribute_command",
+            "pr_reviewer"
+          ],
+          "ratio": 0.046154,
+          "hours": 3.69
+        },
+        {
+          "id": "S-201",
+          "level": "Story",
+          "js": 3,
+          "cw": 0.3,
+          "rs": 1.0,
+          "score": 0.9,
+          "evidence": [
+            "contribute_command",
+            "pr_reviewer"
+          ],
+          "ratio": 0.046154,
+          "hours": 3.69
+        },
+        {
+          "id": "S-202",
+          "level": "Story",
+          "js": 3,
+          "cw": 0.3,
+          "rs": 1.0,
+          "score": 0.9,
+          "evidence": [
+            "contribute_command",
+            "pr_reviewer"
+          ],
+          "ratio": 0.046154,
+          "hours": 3.69
+        },
+        {
+          "id": "S-203",
+          "level": "Story",
+          "js": 3,
+          "cw": 0.3,
+          "rs": 1.0,
+          "score": 0.9,
+          "evidence": [
+            "contribute_command",
+            "pr_reviewer"
+          ],
+          "ratio": 0.046154,
+          "hours": 3.69
+        },
+        {
+          "id": "S-204",
+          "level": "Story",
+          "js": 3,
+          "cw": 0.3,
+          "rs": 1.0,
+          "score": 0.9,
+          "evidence": [
+            "contribute_command",
+            "pr_reviewer"
+          ],
+          "ratio": 0.046154,
+          "hours": 3.69
+        },
+        {
+          "id": "S-205",
+          "level": "Story",
+          "js": 5,
+          "cw": 1.0,
+          "rs": 1.0,
+          "score": 5.0,
+          "evidence": [
+            "assignee",
+            "contribute_command"
+          ],
+          "ratio": 0.25641,
+          "hours": 20.51
+        },
+        {
+          "id": "S-206",
+          "level": "Story",
+          "js": 5,
+          "cw": 1.0,
+          "rs": 1.0,
+          "score": 5.0,
+          "evidence": [
+            "assignee",
+            "contribute_command"
+          ],
+          "ratio": 0.25641,
+          "hours": 20.51
+        },
+        {
+          "id": "S-207",
+          "level": "Story",
+          "js": 5,
+          "cw": 1.0,
+          "rs": 1.0,
+          "score": 5.0,
+          "evidence": [
+            "assignee",
+            "contribute_command"
+          ],
+          "ratio": 0.25641,
+          "hours": 20.51
+        }
+      ],
+      "invariant_ok": false
+    },
+    {
+      "id": "turyna",
+      "name": "Turyna",
+      "role": "Dev",
+      "capacity": 60,
+      "total_derived": 60.0,
+      "items": [
+        {
+          "id": "S-205",
+          "level": "Story",
+          "js": 5,
+          "cw": 0.6,
+          "rs": 1.0,
+          "score": 3.0,
+          "evidence": [
+            "contribute_command",
+            "pr_author",
+            "commit_author"
+          ],
+          "ratio": 0.333333,
+          "hours": 20.0
+        },
+        {
+          "id": "S-206",
+          "level": "Story",
+          "js": 5,
+          "cw": 0.6,
+          "rs": 1.0,
+          "score": 3.0,
+          "evidence": [
+            "contribute_command",
+            "pr_author",
+            "commit_author"
+          ],
+          "ratio": 0.333333,
+          "hours": 20.0
+        },
+        {
+          "id": "S-207",
+          "level": "Story",
+          "js": 5,
+          "cw": 0.6,
+          "rs": 1.0,
+          "score": 3.0,
+          "evidence": [
+            "contribute_command",
+            "pr_author",
+            "commit_author"
+          ],
+          "ratio": 0.333333,
+          "hours": 20.0
+        }
+      ],
+      "invariant_ok": true
+    },
+    {
+      "id": "matousek",
+      "name": "Matousek",
+      "role": "Dev",
+      "capacity": 60,
+      "total_derived": 60.0,
+      "items": [
+        {
+          "id": "S-208",
+          "level": "Story",
+          "js": 3,
+          "cw": 1.0,
+          "rs": 1.0,
+          "score": 3.0,
+          "evidence": [
+            "assignee",
+            "contribute_command"
+          ],
+          "ratio": 0.375,
+          "hours": 22.5
+        },
+        {
+          "id": "S-209",
+          "level": "Story",
+          "js": 5,
+          "cw": 1.0,
+          "rs": 1.0,
+          "score": 5.0,
+          "evidence": [
+            "assignee",
+            "contribute_command"
+          ],
+          "ratio": 0.625,
+          "hours": 37.5
+        }
+      ],
+      "invariant_ok": true
+    },
+    {
+      "id": "pm",
+      "name": "PM Partner",
+      "role": "PM",
+      "capacity": 40,
+      "total_derived": 40.0,
+      "items": [
+        {
+          "id": "S-210",
+          "level": "Story",
+          "js": 3,
+          "cw": 1.0,
+          "rs": 1.0,
+          "score": 3.0,
+          "evidence": [
+            "assignee",
+            "contribute_command"
+          ],
+          "ratio": 1.0,
+          "hours": 40.0
+        }
+      ],
+      "invariant_ok": true
+    },
+    {
+      "id": "d1",
+      "name": "Sr Dev MC",
+      "role": "Dev",
+      "capacity": 40,
+      "total_derived": 40.0,
+      "items": [
+        {
+          "id": "S-211",
+          "level": "Story",
+          "js": 5,
+          "cw": 1.0,
+          "rs": 1.0,
+          "score": 5.0,
+          "evidence": [
+            "assignee",
+            "contribute_command"
+          ],
+          "ratio": 1.0,
+          "hours": 40.0
+        }
+      ],
+      "invariant_ok": true
+    },
+    {
+      "id": "d2",
+      "name": "DB Spec MC",
+      "role": "Dev",
+      "capacity": 40,
+      "total_derived": 40.0,
+      "items": [
+        {
+          "id": "S-212",
+          "level": "Story",
+          "js": 3,
+          "cw": 1.0,
+          "rs": 1.0,
+          "score": 3.0,
+          "evidence": [
+            "assignee",
+            "contribute_command"
+          ],
+          "ratio": 1.0,
+          "hours": 40.0
+        }
+      ],
+      "invariant_ok": true
+    },
+    {
+      "id": "do",
+      "name": "DevOps MC",
+      "role": "Dev",
+      "capacity": 20,
+      "total_derived": 20.0,
+      "items": [
+        {
+          "id": "S-213",
+          "level": "Story",
+          "js": 2,
+          "cw": 1.0,
+          "rs": 1.0,
+          "score": 2.0,
+          "evidence": [
+            "assignee",
+            "contribute_command"
+          ],
+          "ratio": 1.0,
+          "hours": 20.0
+        }
+      ],
+      "invariant_ok": true
+    }
+  ],
+  "team_total": 379.98,
+  "all_invariants_passed": false
+}

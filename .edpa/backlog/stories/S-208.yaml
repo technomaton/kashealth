@@ -1,0 +1,12 @@
+id: S-208
+title: Story 208
+type: Story
+parent: F-100
+status: Done
+iteration: PI-2026-1.1
+js: 3
+assignee: matousek
+contributors:
+  - person: matousek
+    role: owner
+    cw: 1.0
