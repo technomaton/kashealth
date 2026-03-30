@@ -1,0 +1,59 @@
+project:
+  name: Medical Platform & Datovy e-shop
+  registration: CZ.01.01.01/01/24_062/0007440
+  organization: CVUT FBMI + Partner s.r.o.
+  program: OP TAK
+people:
+- id: urbanek
+  name: J. Urbanek
+  role: Arch
+  team: CVUT
+  fte: 0.5
+  capacity_per_iteration: 40
+- id: tuma
+  name: O. Tuma
+  role: DevSecOps
+  team: CVUT
+  fte: 1.0
+  capacity_per_iteration: 80
+- id: turyna
+  name: Turyna
+  role: Dev
+  team: CVUT
+  fte: 0.75
+  capacity_per_iteration: 60
+- id: matousek
+  name: Matousek
+  role: Dev
+  team: CVUT
+  fte: 0.75
+  capacity_per_iteration: 60
+- id: pm
+  name: PM Partner
+  role: PM
+  team: Partner
+  fte: 0.5
+  capacity_per_iteration: 40
+- id: d1
+  name: Sr Dev MC
+  role: Dev
+  team: Partner
+  fte: 0.5
+  capacity_per_iteration: 40
+- id: d2
+  name: DB Spec MC
+  role: Dev
+  team: Partner
+  fte: 0.5
+  capacity_per_iteration: 40
+- id: do
+  name: DevOps MC
+  role: Dev
+  team: Partner
+  fte: 0.25
+  capacity_per_iteration: 20
+teams:
+- id: CVUT
+  planning_factor: 0.8
+- id: Partner
+  planning_factor: 0.75

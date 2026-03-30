@@ -1,0 +1,80 @@
+# EDPA Capacity Registry
+# Edit this file with your team details
+# Updated at each Iteration Planning
+
+cadence:
+  iteration_weeks: 2                          # 1 (AI-native) or 2 (classic)
+  pi_weeks: 10                                # 5 or 10
+  delivery_iterations_per_pi: 4               # PI minus IP iteration
+  ip_iterations_per_pi: 1                     # Innovation & Planning
+
+# Teams — planning_factor is a team-level decision, not a cadence property
+teams:
+  - id: "Org A"
+    planning_factor: 0.8                      # Plan to 80% of team capacity
+    # Buffer absorbs: support, maintenance, incidents, unplanned work
+    # EDPA calculation always uses 100% capacity — planning_factor is a planning heuristic only
+
+# Team members — add/remove as needed
+people:
+  # EXAMPLE — replace with your team:
+  - id: example-arch
+    name: "Architect Name"
+    role: Arch                                # Arch, Dev, DevSecOps, PM, QA
+    team: "Org A"                             # Organization name
+    fte: 0.5
+    capacity_per_iteration: 40                # hours (FTE × 80 for 2-week iter)
+    email: "arch@example.com"
+    availability: confirmed                   # confirmed, partial, unavailable
+
+  - id: example-dev
+    name: "Developer Name"
+    role: Dev
+    team: "Org A"
+    fte: 1.0
+    capacity_per_iteration: 80
+    email: "dev@example.com"
+    availability: confirmed
+
+# ─────────────────────────────────────────────────────────────────────
+# MULTI-ROLE: Jeden člověk, více smluv/rolí
+# ─────────────────────────────────────────────────────────────────────
+# Pokud má člověk více smluv (např. HPP + DPČ) s různými rolemi,
+# vytvořte pro každou smlouvu samostatný záznam s unikátním ID:
+#
+#   - id: urbanek-arch           # Smlouva 1: HPP, Architekt
+#     name: "Jaroslav Urbánek"
+#     role: Arch
+#     contract: HPP
+#     fte: 1.0
+#     capacity_per_iteration: 40
+#     evidence_default: true     # Default pro Git auto-detection
+#     evidence_scope: ["S-*", "F-*"]  # fnmatch patterns pro item IDs (v2.0)
+#
+#   - id: urbanek-pm             # Smlouva 2: DPČ, PM
+#     name: "Jaroslav Urbánek"
+#     role: PM
+#     contract: DPČ
+#     fte: 0.2
+#     capacity_per_iteration: 8
+#     evidence_default: false
+#     evidence_scope: ["E-*", "I-*"]  # PM vidí Epics/Initiatives
+#
+# evidence_scope (v2.0):
+#   Seznam fnmatch patterns pro item IDs.
+#   Pouze items matchující tyto patterns generují evidence pro tento kontrakt.
+#   evidence_default: true = fallback pro items bez matchujícího scope.
+#
+# EDPA garance platí per záznam:
+#   Σ DerivedHours[urbanek-arch] = 40h
+#   Σ DerivedHours[urbanek-pm] = 8h
+#
+# Evidence přiřazení:
+#   V backlogu explicitně: contributors.person = "urbanek-arch"
+#   Nebo: /contribute @urbanek-pm weight:0.4 v issue komentáři
+#   Default: evidence_default=true záznam dostane nespecifikované commity
+
+# Calculated at runtime by EDPA engine:
+# total_fte: sum of people[].fte
+# total_capacity_per_iteration: sum of people[].capacity_per_iteration
+# total_capacity_per_pi: total_capacity_per_iteration × delivery_iterations_per_pi
