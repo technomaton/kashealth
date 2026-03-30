@@ -1,0 +1,15 @@
+id: S-206
+title: Story 206
+type: Story
+parent: F-101
+status: Ready
+iteration: PI-2026-1.1
+js: 5
+assignee: tuma
+contributors:
+  - person: tuma
+    role: owner
+    cw: 1.0
+  - person: turyna
+    role: key
+    cw: 0.6

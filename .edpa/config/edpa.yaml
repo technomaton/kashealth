@@ -1,52 +1,53 @@
-templates:
-  people: .claude/edpa/templates/people.yaml.tmpl
-  heuristics: .claude/edpa/templates/cw_heuristics.yaml.tmpl
-  project: .claude/edpa/templates/project.yaml.tmpl
 backlog_dir: .edpa/backlog/
-iterations_dir: .edpa/iterations/
-reports_dir: .edpa/reports/
-snapshots_dir: .edpa/snapshots/
-pi:
-  current: PI-2026-1
-  year: 2026
-  num: 1
-  iteration_weeks: 2
-  pi_weeks: 10
-  iterations:
-  - id: PI-2026-1.1
-    dates: 1.4.--14.4.2026
-    status: planned
-  - id: PI-2026-1.2
-    dates: 15.4.--28.4.2026
-    status: planned
-  - id: PI-2026-1.3
-    dates: 29.4.--12.5.2026
-    status: planned
-  - id: PI-2026-1.4
-    dates: 13.5.--26.5.2026
-    status: planned
-  - id: PI-2026-1.5
-    dates: 27.5.--9.6.2026
-    status: planned
-    type: IP
-evidence:
-  sources:
-  - type: git_commits
-    pattern: feat|fix|refactor|test|docs
-  - type: branch_naming
-    pattern: '{type}/{ITEM_ID}-{description}'
 cw_roles:
-  owner: 1.0
-  key: 0.6
-  reviewer: 0.3
   consulted: 0.2
   informed: 0.05
+  key: 0.6
+  owner: 1.0
+  reviewer: 0.3
+evidence:
+  sources:
+  - pattern: feat|fix|refactor|test|docs
+    type: git_commits
+  - pattern: '{type}/{ITEM_ID}-{description}'
+    type: branch_naming
+iterations_dir: .edpa/iterations/
+pi:
+  current: PI-2026-1
+  iteration_weeks: 2
+  iterations:
+  - dates: 1.4.--14.4.2026
+    id: PI-2026-1.1
+    status: planned
+  - dates: 15.4.--28.4.2026
+    id: PI-2026-1.2
+    status: planned
+  - dates: 29.4.--12.5.2026
+    id: PI-2026-1.3
+    status: planned
+  - dates: 13.5.--26.5.2026
+    id: PI-2026-1.4
+    status: planned
+  - dates: 27.5.--9.6.2026
+    id: PI-2026-1.5
+    status: planned
+    type: IP
+  num: 1
+  pi_weeks: 10
+  year: 2026
+reports_dir: .edpa/reports/
+snapshots_dir: .edpa/snapshots/
+sync:
+  auto_commit: true
+  github_org: technomaton
+  github_project_id: PVT_kwDOAP4s484BTQOB
+  github_project_number: 6
+templates:
+  heuristics: .claude/edpa/templates/cw_heuristics.yaml.tmpl
+  people: .claude/edpa/templates/people.yaml.tmpl
+  project: .claude/edpa/templates/project.yaml.tmpl
 validation:
   max_story_js: 8
   require_assignee: true
   require_iteration: true
   require_parent: true
-sync:
-  github_org: technomaton
-  github_project_number: 0
-  auto_commit: true

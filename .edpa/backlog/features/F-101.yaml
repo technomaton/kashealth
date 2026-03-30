@@ -1,0 +1,15 @@
+id: F-101
+title: Authentication & Authorization
+type: Feature
+parent: E-10
+status: Active
+iteration: PI-2026-1.1
+js: 8
+bv: 10
+tc: 8
+rr: 5
+wsjf: 2.88
+acceptance_criteria:
+  - OAuth2 login
+  - Role-based access (admin, doctor, nurse)
+  - Audit log

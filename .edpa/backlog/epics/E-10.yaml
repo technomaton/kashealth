@@ -1,0 +1,8 @@
+id: E-10
+title: Patient Data Management
+type: Epic
+parent: I-1
+status: Active
+hypothesis: |
+  Pokud implementujeme centrální správu pacientských dat,
+  snížíme duplicity o 80% a zrychlíme vyhledávání o 50%.

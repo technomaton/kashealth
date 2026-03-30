@@ -1,0 +1,15 @@
+id: S-202
+title: Story 202
+type: Story
+parent: F-100
+status: Ready
+iteration: PI-2026-1.1
+js: 3
+assignee: urbanek
+contributors:
+  - person: urbanek
+    role: owner
+    cw: 1.0
+  - person: tuma
+    role: reviewer
+    cw: 0.3

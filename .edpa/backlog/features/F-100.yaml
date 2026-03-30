@@ -1,0 +1,15 @@
+id: F-100
+title: Patient Registry
+type: Feature
+parent: E-10
+status: Active
+iteration: PI-2026-1.1
+js: 13
+bv: 8
+tc: 5
+rr: 3
+wsjf: 1.23
+acceptance_criteria:
+  - CRUD operace pro pacientské záznamy
+  - Vyhledávání podle jména, rodného čísla
+  - Export do CSV
