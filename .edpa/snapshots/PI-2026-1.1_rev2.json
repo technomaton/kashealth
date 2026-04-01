@@ -1,0 +1,386 @@
+{
+  "snapshot_version": "1.0.0-beta",
+  "iteration": "PI-2026-1.1",
+  "generated_at": "2026-04-01T13:54:18.617787+00:00",
+  "frozen": true,
+  "methodology": "EDPA 1.0.0-beta",
+  "mode": "simple",
+  "capacity_registry": {
+    "people": [
+      {
+        "id": "urbanek",
+        "name": "J. Urbanek",
+        "role": "Arch",
+        "team": "CVUT",
+        "fte": 0.5,
+        "capacity_per_iteration": 40
+      },
+      {
+        "id": "tuma",
+        "name": "O. Tuma",
+        "role": "DevSecOps",
+        "team": "CVUT",
+        "fte": 1.0,
+        "capacity_per_iteration": 80
+      },
+      {
+        "id": "turyna",
+        "name": "Turyna",
+        "role": "Dev",
+        "team": "CVUT",
+        "fte": 0.75,
+        "capacity_per_iteration": 60
+      },
+      {
+        "id": "matousek",
+        "name": "Matousek",
+        "role": "Dev",
+        "team": "CVUT",
+        "fte": 0.75,
+        "capacity_per_iteration": 60
+      },
+      {
+        "id": "pm",
+        "name": "PM Partner",
+        "role": "PM",
+        "team": "Partner",
+        "fte": 0.5,
+        "capacity_per_iteration": 40
+      },
+      {
+        "id": "d1",
+        "name": "Sr Dev MC",
+        "role": "Dev",
+        "team": "Partner",
+        "fte": 0.5,
+        "capacity_per_iteration": 40
+      },
+      {
+        "id": "d2",
+        "name": "DB Spec MC",
+        "role": "Dev",
+        "team": "Partner",
+        "fte": 0.5,
+        "capacity_per_iteration": 40
+      },
+      {
+        "id": "do",
+        "name": "DevOps MC",
+        "role": "Dev",
+        "team": "Partner",
+        "fte": 0.25,
+        "capacity_per_iteration": 20
+      }
+    ],
+    "teams": [
+      {
+        "id": "CVUT",
+        "planning_factor": 0.8
+      },
+      {
+        "id": "Partner",
+        "planning_factor": 0.75
+      }
+    ]
+  },
+  "derived_reports": [
+    {
+      "person": "urbanek",
+      "name": "J. Urbanek",
+      "role": "Arch",
+      "capacity": 40,
+      "total_derived": 40.0,
+      "items_count": 5,
+      "invariant_ok": true
+    },
+    {
+      "person": "tuma",
+      "name": "O. Tuma",
+      "role": "DevSecOps",
+      "capacity": 80,
+      "total_derived": 80.0,
+      "items_count": 8,
+      "invariant_ok": true
+    },
+    {
+      "person": "turyna",
+      "name": "Turyna",
+      "role": "Dev",
+      "capacity": 60,
+      "total_derived": 60.0,
+      "items_count": 3,
+      "invariant_ok": true
+    },
+    {
+      "person": "matousek",
+      "name": "Matousek",
+      "role": "Dev",
+      "capacity": 60,
+      "total_derived": 60.0,
+      "items_count": 2,
+      "invariant_ok": true
+    },
+    {
+      "person": "pm",
+      "name": "PM Partner",
+      "role": "PM",
+      "capacity": 40,
+      "total_derived": 40.0,
+      "items_count": 1,
+      "invariant_ok": true
+    },
+    {
+      "person": "d1",
+      "name": "Sr Dev MC",
+      "role": "Dev",
+      "capacity": 40,
+      "total_derived": 40.0,
+      "items_count": 1,
+      "invariant_ok": true
+    },
+    {
+      "person": "d2",
+      "name": "DB Spec MC",
+      "role": "Dev",
+      "capacity": 40,
+      "total_derived": 40.0,
+      "items_count": 1,
+      "invariant_ok": true
+    },
+    {
+      "person": "do",
+      "name": "DevOps MC",
+      "role": "Dev",
+      "capacity": 20,
+      "total_derived": 20.0,
+      "items_count": 1,
+      "invariant_ok": true
+    }
+  ],
+  "items": [
+    {
+      "id": "S-200",
+      "level": "Story",
+      "job_size": 3,
+      "contributor": "urbanek",
+      "cw": 1.0,
+      "score": 3.0,
+      "ratio": 0.2,
+      "hours": 8.0
+    },
+    {
+      "id": "S-201",
+      "level": "Story",
+      "job_size": 3,
+      "contributor": "urbanek",
+      "cw": 1.0,
+      "score": 3.0,
+      "ratio": 0.2,
+      "hours": 8.0
+    },
+    {
+      "id": "S-202",
+      "level": "Story",
+      "job_size": 3,
+      "contributor": "urbanek",
+      "cw": 1.0,
+      "score": 3.0,
+      "ratio": 0.2,
+      "hours": 8.0
+    },
+    {
+      "id": "S-203",
+      "level": "Story",
+      "job_size": 3,
+      "contributor": "urbanek",
+      "cw": 1.0,
+      "score": 3.0,
+      "ratio": 0.2,
+      "hours": 8.0
+    },
+    {
+      "id": "S-204",
+      "level": "Story",
+      "job_size": 3,
+      "contributor": "urbanek",
+      "cw": 1.0,
+      "score": 3.0,
+      "ratio": 0.2,
+      "hours": 8.0
+    },
+    {
+      "id": "S-200",
+      "level": "Story",
+      "job_size": 3,
+      "contributor": "tuma",
+      "cw": 0.3,
+      "score": 0.9,
+      "ratio": 0.046154,
+      "hours": 3.69
+    },
+    {
+      "id": "S-201",
+      "level": "Story",
+      "job_size": 3,
+      "contributor": "tuma",
+      "cw": 0.3,
+      "score": 0.9,
+      "ratio": 0.046154,
+      "hours": 3.69
+    },
+    {
+      "id": "S-202",
+      "level": "Story",
+      "job_size": 3,
+      "contributor": "tuma",
+      "cw": 0.3,
+      "score": 0.9,
+      "ratio": 0.046154,
+      "hours": 3.69
+    },
+    {
+      "id": "S-203",
+      "level": "Story",
+      "job_size": 3,
+      "contributor": "tuma",
+      "cw": 0.3,
+      "score": 0.9,
+      "ratio": 0.046154,
+      "hours": 3.69
+    },
+    {
+      "id": "S-204",
+      "level": "Story",
+      "job_size": 3,
+      "contributor": "tuma",
+      "cw": 0.3,
+      "score": 0.9,
+      "ratio": 0.046154,
+      "hours": 3.69
+    },
+    {
+      "id": "S-205",
+      "level": "Story",
+      "job_size": 5,
+      "contributor": "tuma",
+      "cw": 1.0,
+      "score": 5.0,
+      "ratio": 0.25641,
+      "hours": 20.51
+    },
+    {
+      "id": "S-206",
+      "level": "Story",
+      "job_size": 5,
+      "contributor": "tuma",
+      "cw": 1.0,
+      "score": 5.0,
+      "ratio": 0.25641,
+      "hours": 20.51
+    },
+    {
+      "id": "S-207",
+      "level": "Story",
+      "job_size": 5,
+      "contributor": "tuma",
+      "cw": 1.0,
+      "score": 5.0,
+      "ratio": 0.25641,
+      "hours": 20.53
+    },
+    {
+      "id": "S-205",
+      "level": "Story",
+      "job_size": 5,
+      "contributor": "turyna",
+      "cw": 0.6,
+      "score": 3.0,
+      "ratio": 0.333333,
+      "hours": 20.0
+    },
+    {
+      "id": "S-206",
+      "level": "Story",
+      "job_size": 5,
+      "contributor": "turyna",
+      "cw": 0.6,
+      "score": 3.0,
+      "ratio": 0.333333,
+      "hours": 20.0
+    },
+    {
+      "id": "S-207",
+      "level": "Story",
+      "job_size": 5,
+      "contributor": "turyna",
+      "cw": 0.6,
+      "score": 3.0,
+      "ratio": 0.333333,
+      "hours": 20.0
+    },
+    {
+      "id": "S-208",
+      "level": "Story",
+      "job_size": 3,
+      "contributor": "matousek",
+      "cw": 1.0,
+      "score": 3.0,
+      "ratio": 0.375,
+      "hours": 22.5
+    },
+    {
+      "id": "S-209",
+      "level": "Story",
+      "job_size": 5,
+      "contributor": "matousek",
+      "cw": 1.0,
+      "score": 5.0,
+      "ratio": 0.625,
+      "hours": 37.5
+    },
+    {
+      "id": "S-210",
+      "level": "Story",
+      "job_size": 3,
+      "contributor": "pm",
+      "cw": 1.0,
+      "score": 3.0,
+      "ratio": 1.0,
+      "hours": 40.0
+    },
+    {
+      "id": "S-211",
+      "level": "Story",
+      "job_size": 5,
+      "contributor": "d1",
+      "cw": 1.0,
+      "score": 5.0,
+      "ratio": 1.0,
+      "hours": 40.0
+    },
+    {
+      "id": "S-212",
+      "level": "Story",
+      "job_size": 3,
+      "contributor": "d2",
+      "cw": 1.0,
+      "score": 3.0,
+      "ratio": 1.0,
+      "hours": 40.0
+    },
+    {
+      "id": "S-213",
+      "level": "Story",
+      "job_size": 2,
+      "contributor": "do",
+      "cw": 1.0,
+      "score": 2.0,
+      "ratio": 1.0,
+      "hours": 20.0
+    }
+  ],
+  "invariants": {
+    "all_passed": true
+  },
+  "signature_status": "pending"
+}

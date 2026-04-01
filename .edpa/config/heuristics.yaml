@@ -1,182 +1,86 @@
-# EDPA Contribution Weight Heuristics v1.0.0
-#
-# Kalibrováno Monte Carlo simulací (1000 scénářů, 66 362 záznamů, p<0.001)
-# Validováno: 8 týmových kompozic (569 párů) + 2-PI simulace (172 ground truth)
-#
-# Git měří aktivitu, ne hodnotu. Tyto váhy korigují systematické biasy
-# pro strategické role (BO, PM, Arch), které auto-detekce podhodnocuje.
-
-version: "1.0.0"
-
-# Minimum evidence score to be considered a contributor
-evidence_threshold: 1.0
-
-# ─────────────────────────────────────────────────────────────────────
-# CW MATICE PER ROLE × EVIDENCE
-# ─────────────────────────────────────────────────────────────────────
-#
-# Každá role má vlastní CW per evidence level.
-# Hodnoty = medián z Monte Carlo (1000 scénářů, p<0.001).
-#
-#                  owner    key    reviewer  consulted
-#                  ─────    ───    ────────  ─────────
-#   BO               —      —       0.35      0.30     ← podhodnocen auto-detekcí
-#   PM               —      —       0.25      0.20     ← podhodnocen auto-detekcí
-#   Arch           1.00    0.60     0.30       —       ← reviewer podhodnocen
-#   Dev            1.00    0.60     0.25       —       ← přesně kalibrován
-#   DevSecOps      1.00    0.60     0.25       —       ← přesně kalibrován
-#   QA               —     0.60     0.25       —       ← přesně kalibrován
-#
-
-# Generické výchozí váhy (fallback pokud role není známa)
-role_weights:
-  owner: 1.00          # assignee na issue
-  key: 0.60            # PR author, /contribute
-  reviewer: 0.25       # PR reviewer, commit author
-  consulted: 0.15      # issue/PR komentář
-
-# Per-role koeficienty — APLIKOVÁNY enginem v2.0+
-# (V v1.x byly deklarovány ale engine je ignoroval — opraveno v v2.0)
-# compute_cw() čte person.role z people.yaml a aplikuje příslušný override.
-role_overrides:
-
-  # ═══ STRATEGICKÉ ROLE (Git je podhodnocuje) ═══
-
-  BO:                          # Business Owner
-    owner: 1.00                # n/a (BO není assignee)
-    key: 0.60                  # n/a (BO nedělá PR)
-    reviewer: 0.35             # MC: median=0.35, n=296, bias=+0.10, 63% korekcí
-    consulted: 0.30            # MC: median=0.30, n=1514, bias=+0.16, 75% korekcí
-    #
-    # Proč: BO rozhoduje o prioritách, validuje business value,
-    # schvaluje/zastavuje epicy. Nic z toho se neprojeví v commitech.
-    # Tým na retro potvrzuje vyšší CW v 75% případů.
-
-  PM:                          # Product Manager / Product Owner
-    owner: 1.00                # n/a
-    key: 0.60                  # n/a
-    reviewer: 0.25             # MC: median=0.25, n=1157, bias=+0.04, 45% korekcí
-    consulted: 0.20            # MC: median=0.20, n=6200, bias=+0.11, 60% korekcí
-    #
-    # Proč: PM definuje požadavky, acceptance criteria, stakeholder mgmt.
-    # Git vidí jen komentáře, ne hodiny strávené specifikací.
-
-  Arch:                        # Architect
-    owner: 1.00                # MC: stable, n=neaplikováno
-    key: 0.60                  # MC: median=0.60, n=1306, stable
-    reviewer: 0.30             # MC: median=0.30, n=2907, bias=+0.10, 53% korekcí
-    consulted: 0.15            # fallback
-    #
-    # Proč: Arch dělá design reviews, mentoring, architektonická rozhodnutí
-    # napříč stories. Git vidí jen code review, ne architektonický přínos.
-
-  # ═══ VÝKONNÉ ROLE (Git je měří přesně) ═══
-
-  Dev:                         # Developer
-    owner: 1.00                # MC: median=1.00, n=17855, only 5% korekcí ✓
-    key: 0.60                  # MC: median=0.60, n=14340, 16% korekcí ✓
-    reviewer: 0.25             # MC: median=0.25, n=6217, 24% korekcí ✓
-    consulted: 0.15            # fallback
-    #
-    # Dev je nejlépe kalibrovaná role. Git commity = práce.
-
-  DevSecOps:                   # DevSecOps Engineer
-    owner: 1.00                # MC: median=1.00, n=2152, 10% korekcí ✓
-    key: 0.60                  # MC: median=0.60, n=1234, 20% korekcí ✓
-    reviewer: 0.25             # MC: median=0.25, n=1275, 40% korekcí (borderline)
-    consulted: 0.15            # fallback
-    #
-    # DevSecOps infra práce (CI/CD, security) je většinou viditelná v Git.
-    # Reviewer CW borderline (40% korekcí), ale medián = 0.25 → necháváme.
-
-  QA:                          # QA / Test Engineer
-    owner: 1.00                # MC: stable (25% korekcí dolů, ale medián drží)
-    key: 0.60                  # MC: median=0.60, n=3017 (26% korekcí dolů)
-    reviewer: 0.25             # MC: median=0.25, n=6892, stable ✓
-    consulted: 0.15            # fallback
-    #
-    # QA má mnoho testovacích commitů, ale ty neznamenají ownership.
-    # Medián drží na auto-detected hodnotách → beze změny.
-
-# ─────────────────────────────────────────────────────────────────────
-# EVIDENCE SIGNÁLY A JEJICH VÁHY
-# ─────────────────────────────────────────────────────────────────────
-signals:
-  assignee: 4.0             # GitHub issue assignee → owner
-  contribute_command: 3.0    # /contribute @person weight:X → key
-  pr_author: 2.0            # PR author referencing item → key
-  commit_author: 1.0        # Commit s S-XXX/F-XXX/E-XXX → reviewer
-  pr_reviewer: 1.0          # PR review → reviewer
-  issue_comment: 0.5        # Komentář na issue/PR → consulted
-
-# ─────────────────────────────────────────────────────────────────────
-# PRAVIDLA
-# ─────────────────────────────────────────────────────────────────────
-rules:
-  - "Nejvyšší signál určuje evidence_role (nesčítá se)"
-  - "role_overrides se aplikují podle role osoby z people.yaml"
-  - "Manuální override (/contribute) má přednost před auto-detekcí"
-  - "Počet commitů se NEPŘEVÁDÍ na čas — jen signalizuje relevanci"
-  - "In Progress items se vylučují z EDPA výpočtu"
-  - "VŠECHNY commity jsou delivery evidence — včetně governance (.edpa/, config/)"
-
-# ─────────────────────────────────────────────────────────────────────
-# PRINCIP: PRÁCE = PRÁCE, NEZÁVISÍ NA TYPU SOUBORU
-# ─────────────────────────────────────────────────────────────────────
-# EDPA neměří "vývoj kódu" — měří příspěvek k dodávce projektu.
-#
-# PM, který upravuje backlog, plánuje iteraci a definuje AC,
-# PRACUJE na projektu stejně jako Dev, který kóduje.
-#
-# Analytická a přípravná fáze (plánování, specifikace, prioritizace)
-# je většina práce — ne vývoj samotný.
-#
-# Proto:
-#   Commit na .edpa/backlog.yaml  = práce na projektu ✓
-#   Commit na src/parser.py       = práce na projektu ✓
-#   Commit na config/people.yaml = práce na projektu ✓
-#
-# CW matice per role zajistí správný poměr:
-#   PM commit na backlog  → CW dle role_overrides (PM consulted=0.20)
-#   Dev commit na src/    → CW dle role_overrides (Dev owner=1.00)
-#
-# Díky tomu jsou BO, PM a Arch na stejné úrovni jako Dev —
-# jejich příspěvek se měří stejným principem, jen s jinými vahami.
-
-# ─────────────────────────────────────────────────────────────────────
-# KALIBRACE — METADATA
-# ─────────────────────────────────────────────────────────────────────
 calibration:
-  method: "Monte Carlo + multi-scenario + 2-PI simulation"
+  calibrated_at: '2026-03-22'
+  key_findings:
+  - 'BO: bias +0.16 (75% korekcí) — rozhodování neviditelné v Git'
+  - 'PM: bias +0.11 (60% korekcí) — specifikace neviditelná v Git'
+  - 'Arch: bias +0.10 (53% korekcí) — review/mentoring neviditelný'
+  - 'Dev: bias 0.00 — Git přesně měří vývojářskou práci'
+  - 'QA: bias 0.00 — mediány odpovídají auto-detekci'
+  - 'DevSecOps: bias 0.00 — infra práce viditelná v Git'
+  method: Monte Carlo + multi-scenario + 2-PI simulation
   monte_carlo:
-    scenarios: 1000
+    confidence: HIGH (p<0.001 for all biases)
+    mad_reduction: 7.7%
     records: 66362
-    team_sizes: "4-15 členů"
-    mad_reduction: "7.7%"
-    confidence: "HIGH (p<0.001 for all biases)"
+    scenarios: 1000
+    team_sizes: 4-15 členů
   multi_scenario:
+    records: 569
     scenarios: 8
     types:
-      - "Startup (5 lidí)"
-      - "Enterprise (12)"
-      - "DevOps-heavy (7)"
-      - "Research R&D (6)"
-      - "Consultancy (8)"
-      - "AI-Native (5)"
-      - "Regulated (9)"
-      - "kashealth (7)"
-    records: 569
+    - Startup (5 lidí)
+    - Enterprise (12)
+    - DevOps-heavy (7)
+    - Research R&D (6)
+    - Consultancy (8)
+    - AI-Native (5)
+    - Regulated (9)
+    - kashealth (7)
   simulation:
-    pis: 2
-    iterations: 10
     commits: 510
     ground_truth_records: 172
-    mad_trend: "0.0412 → 0.0333 (↓19.2%)"
-  calibrated_at: "2026-03-22"
-  key_findings:
-    - "BO: bias +0.16 (75% korekcí) — rozhodování neviditelné v Git"
-    - "PM: bias +0.11 (60% korekcí) — specifikace neviditelná v Git"
-    - "Arch: bias +0.10 (53% korekcí) — review/mentoring neviditelný"
-    - "Dev: bias 0.00 — Git přesně měří vývojářskou práci"
-    - "QA: bias 0.00 — mediány odpovídají auto-detekci"
-    - "DevSecOps: bias 0.00 — infra práce viditelná v Git"
+    iterations: 10
+    mad_trend: 0.0412 → 0.0333 (↓19.2%)
+    pis: 2
+evidence_threshold: 1.0
+role_overrides:
+  Arch:
+    consulted: 0.15
+    key: 0.6
+    owner: 1.0
+    reviewer: 0.3
+  BO:
+    consulted: 0.3
+    key: 0.6
+    owner: 1.0
+    reviewer: 0.35
+  Dev:
+    consulted: 0.15
+    key: 0.6
+    owner: 1.0
+    reviewer: 0.25
+  DevSecOps:
+    consulted: 0.15
+    key: 0.6
+    owner: 1.0
+    reviewer: 0.3
+  PM:
+    consulted: 0.2
+    key: 0.6
+    owner: 1.0
+    reviewer: 0.25
+  QA:
+    consulted: 0.15
+    key: 0.6
+    owner: 1.0
+    reviewer: 0.25
+role_weights:
+  consulted: 0.15
+  key: 0.6
+  owner: 1.0
+  reviewer: 0.25
+rules:
+- Nejvyšší signál určuje evidence_role (nesčítá se)
+- role_overrides se aplikují podle role osoby z people.yaml
+- Manuální override (/contribute) má přednost před auto-detekcí
+- Počet commitů se NEPŘEVÁDÍ na čas — jen signalizuje relevanci
+- In Progress items se vylučují z EDPA výpočtu
+- VŠECHNY commity jsou delivery evidence — včetně governance (.edpa/, config/)
+signals:
+  assignee: 4.0
+  commit_author: 1.0
+  contribute_command: 3.0
+  issue_comment: 0.5
+  pr_author: 2.0
+  pr_reviewer: 1.0
+version: 1.0.0

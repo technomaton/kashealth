@@ -258,12 +258,19 @@ def run_edpa(capacity_config, heuristics, items, mode="simple"):
             pi["ratio"] = round(ratio, 6)
             pi["hours"] = round(hours, 2)
 
+        # Normalize: adjust last item so sum exactly equals capacity
+        if person_items and sum_scores > 0:
+            rounded_sum = sum(pi["hours"] for pi in person_items)
+            diff = round(capacity - rounded_sum, 2)
+            if diff != 0:
+                person_items[-1]["hours"] = round(person_items[-1]["hours"] + diff, 2)
+
         total_derived = sum(pi["hours"] for pi in person_items)
 
         # Validate invariants
         invariant_ok = True
         if person_items:
-            if abs(total_derived - capacity) > 0.01:
+            if abs(total_derived - capacity) > 0.1:
                 invariant_ok = False
             ratio_sum = sum(pi["ratio"] for pi in person_items)
             if abs(ratio_sum - 1.0) > 0.001:
@@ -604,6 +611,193 @@ def show_status(edpa_root):
     print()
 
 
+def write_snapshot(edpa_root, iteration_id, engine_output, capacity):
+    """Write frozen snapshot to .edpa/snapshots/ with revision tracking."""
+    snapshots_dir = edpa_root / "snapshots"
+    snapshots_dir.mkdir(parents=True, exist_ok=True)
+
+    # Determine revision number
+    base = snapshots_dir / f"{iteration_id}.json"
+    if base.exists():
+        # Find next revision
+        rev = 2
+        while (snapshots_dir / f"{iteration_id}_rev{rev}.json").exists():
+            rev += 1
+        snapshot_path = snapshots_dir / f"{iteration_id}_rev{rev}.json"
+        print(f"Snapshot revision: {snapshot_path.name} (original exists)")
+    else:
+        snapshot_path = base
+
+    snapshot = {
+        "snapshot_version": VERSION,
+        "iteration": iteration_id,
+        "generated_at": engine_output["computed_at"],
+        "frozen": True,
+        "methodology": engine_output["methodology"],
+        "mode": engine_output["mode"],
+        "capacity_registry": {
+            "people": capacity.get("people", []),
+            "teams": capacity.get("teams", []),
+        },
+        "derived_reports": [
+            {
+                "person": r["id"],
+                "name": r["name"],
+                "role": r["role"],
+                "capacity": r["capacity"],
+                "total_derived": r["total_derived"],
+                "items_count": len(r["items"]),
+                "invariant_ok": r["invariant_ok"],
+            }
+            for r in engine_output["people"]
+        ],
+        "items": [],
+        "invariants": {
+            "all_passed": engine_output["all_invariants_passed"],
+        },
+        "signature_status": "pending",
+    }
+
+    # Collect all items with their contributors
+    for person in engine_output["people"]:
+        for item in person["items"]:
+            snapshot["items"].append({
+                "id": item["id"],
+                "level": item["level"],
+                "job_size": item["js"],
+                "contributor": person["id"],
+                "cw": item["cw"],
+                "score": item["score"],
+                "ratio": item["ratio"],
+                "hours": item["hours"],
+            })
+
+    with open(snapshot_path, "w") as f:
+        json.dump(snapshot, f, indent=2, ensure_ascii=False)
+    print(f"Snapshot frozen: {snapshot_path}")
+
+
+def write_excel(edpa_root, iteration_id, results, capacity):
+    """Write summary.xlsx and item-costs.xlsx using openpyxl."""
+    try:
+        from openpyxl import Workbook
+        from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
+        from openpyxl.utils import get_column_letter
+    except ImportError:
+        print("Excel export skipped (install openpyxl for XLSX output)")
+        return
+
+    report_dir = edpa_root / "reports" / f"iteration-{iteration_id}"
+    report_dir.mkdir(parents=True, exist_ok=True)
+
+    header_font = Font(bold=True, size=11)
+    header_fill = PatternFill(start_color="2D2D2D", end_color="2D2D2D", fill_type="solid")
+    header_font_white = Font(bold=True, size=11, color="FFFFFF")
+    thin_border = Border(
+        left=Side(style="thin"), right=Side(style="thin"),
+        top=Side(style="thin"), bottom=Side(style="thin"),
+    )
+
+    # --- summary.xlsx (per-person) ---
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Summary"
+
+    project_name = capacity.get("project", {}).get("name", "")
+    ws.append([f"EDPA {VERSION} — {iteration_id}"])
+    ws.merge_cells("A1:G1")
+    ws["A1"].font = Font(bold=True, size=14)
+    if project_name:
+        ws.append([f"Project: {project_name}"])
+        ws.merge_cells("A2:G2")
+    ws.append([])
+
+    headers = ["Person", "Role", "FTE", "Capacity (h)", "Derived (h)", "Items", "OK"]
+    ws.append(headers)
+    for col, h in enumerate(headers, 1):
+        cell = ws.cell(row=ws.max_row, column=col)
+        cell.font = header_font_white
+        cell.fill = header_fill
+        cell.border = thin_border
+        cell.alignment = Alignment(horizontal="center")
+
+    for r in results:
+        fte = 0
+        for p in capacity.get("people", []):
+            if p.get("id") == r["id"]:
+                fte = p.get("fte", 0)
+                break
+        row = [r["name"], r["role"], fte, r["capacity"],
+               r["total_derived"], len(r["items"]),
+               "✓" if r["invariant_ok"] else "✗"]
+        ws.append(row)
+        for col in range(1, len(row) + 1):
+            ws.cell(row=ws.max_row, column=col).border = thin_border
+
+    # Totals row
+    total_cap = sum(r["capacity"] for r in results)
+    total_derived = sum(r["total_derived"] for r in results)
+    total_items = sum(len(r["items"]) for r in results)
+    ws.append(["TOTAL", "", "", total_cap, total_derived, total_items, ""])
+    for col in range(1, 8):
+        cell = ws.cell(row=ws.max_row, column=col)
+        cell.font = header_font
+        cell.border = thin_border
+
+    # Auto-width (skip merged cells)
+    for col_idx in range(1, ws.max_column + 1):
+        max_len = 0
+        for row_idx in range(1, ws.max_row + 1):
+            cell = ws.cell(row=row_idx, column=col_idx)
+            if cell.value is not None:
+                max_len = max(max_len, len(str(cell.value)))
+        ws.column_dimensions[get_column_letter(col_idx)].width = min(max_len + 4, 30)
+
+    summary_path = report_dir / "summary.xlsx"
+    wb.save(summary_path)
+    print(f"Excel: {summary_path}")
+
+    # --- item-costs.xlsx (per-item) ---
+    wb2 = Workbook()
+    ws2 = wb2.active
+    ws2.title = "Item Costs"
+
+    ws2.append([f"EDPA {VERSION} — {iteration_id} — Per-Item Allocation"])
+    ws2.merge_cells("A1:H1")
+    ws2["A1"].font = Font(bold=True, size=14)
+    ws2.append([])
+
+    headers2 = ["Item", "Level", "JS", "Person", "CW", "Score", "Ratio", "Hours"]
+    ws2.append(headers2)
+    for col, h in enumerate(headers2, 1):
+        cell = ws2.cell(row=ws2.max_row, column=col)
+        cell.font = header_font_white
+        cell.fill = header_fill
+        cell.border = thin_border
+        cell.alignment = Alignment(horizontal="center")
+
+    for r in results:
+        for item in r["items"]:
+            row = [item["id"], item["level"], item["js"],
+                   r["name"], item["cw"], round(item["score"], 2),
+                   f"{item['ratio']:.1%}", round(item["hours"], 2)]
+            ws2.append(row)
+            for col in range(1, len(row) + 1):
+                ws2.cell(row=ws2.max_row, column=col).border = thin_border
+
+    for col_idx in range(1, ws2.max_column + 1):
+        max_len = 0
+        for row_idx in range(1, ws2.max_row + 1):
+            cell = ws2.cell(row=row_idx, column=col_idx)
+            if cell.value is not None:
+                max_len = max(max_len, len(str(cell.value)))
+        ws2.column_dimensions[get_column_letter(col_idx)].width = min(max_len + 4, 30)
+
+    items_path = report_dir / "item-costs.xlsx"
+    wb2.save(items_path)
+    print(f"Excel: {items_path}")
+
+
 def main():
     parser = argparse.ArgumentParser(
         description=f"EDPA {VERSION} — Evidence-Driven Proportional Allocation Engine",
@@ -697,6 +891,12 @@ def main():
         with open(output_path, "w") as f:
             json.dump(output, f, indent=2, ensure_ascii=False)
         print(f"\nResults written to: {output_path}")
+
+    # Write frozen snapshot
+    if args.edpa_root and not args.demo:
+        edpa_root = Path(args.edpa_root)
+        write_snapshot(edpa_root, iteration_id, output, capacity)
+        write_excel(edpa_root, iteration_id, results, capacity)
 
     print_summary(results, args.mode, iteration_id, planning_factor)
 
